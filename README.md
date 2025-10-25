@@ -160,11 +160,12 @@ This spec evolved from Bolt prototypes at:
 
 ## 🧱 Next Steps
 
-1. Port `applyForces()` and cursor interaction into Codex workspace.  
-2. Implement diagnostics updates and colorizer consistency.  
-3. Add real semi-Lagrangian advection.  
-4. Introduce Poisson pressure projection.  
-5. Integrate voxel-automata rule layer for fractal forcing search.
+### Issues
+See our [issues](https://github.com/pablo-mayrgundter/euler-fluid-two/issues?q=is%3Aissue%20state%3Aopen%20label%3Abug] list.
+
+### Feature Requests
+
+See our [enhancements](https://github.com/pablo-mayrgundter/euler-fluid-two/issues?q=is%3Aissue%20state%3Aopen%20label%3Aenhancement) list.
 
 ---
 
