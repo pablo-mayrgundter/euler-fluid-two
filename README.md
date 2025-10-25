@@ -161,7 +161,7 @@ This spec evolved from Bolt prototypes at:
 ## 🧱 Next Steps
 
 ### Issues
-See our [issues](https://github.com/pablo-mayrgundter/euler-fluid-two/issues?q=is%3Aissue%20state%3Aopen%20label%3Abug] list.
+See our [issues](https://github.com/pablo-mayrgundter/euler-fluid-two/issues?q=is%3Aissue%20state%3Aopen%20label%3Abug) list.
 
 ### Feature Requests
 

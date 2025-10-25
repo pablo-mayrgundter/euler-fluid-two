@@ -350,17 +350,21 @@ export function computeSpeed(state: GridState): Float32Array {
 }
 
 export function computeGradMag(state: GridState, dx: number): Float32Array {
-  const { N, u, v, gradMag } = state;
+  const { N, speed, gradMag } = state;
 
   for (let j = 0; j < N; j++) {
     for (let i = 0; i < N; i++) {
-      const uc = 0.5 * (u[j * (N + 1) + i] + u[j * (N + 1) + i + 1]);
-      const uRight = i < N - 1 ? 0.5 * (u[j * (N + 1) + i + 1] + u[j * (N + 1) + i + 2]) : uc;
-      const uLeft = i > 0 ? 0.5 * (u[j * (N + 1) + i - 1] + u[j * (N + 1) + i]) : uc;
+      const center = speed[j * N + i];
 
-      const dudx = (uRight - uLeft) / (2 * dx);
+      const left = i > 0 ? speed[j * N + (i - 1)] : center;
+      const right = i < N - 1 ? speed[j * N + (i + 1)] : center;
+      const down = j > 0 ? speed[(j - 1) * N + i] : center;
+      const up = j < N - 1 ? speed[(j + 1) * N + i] : center;
 
-      gradMag[j * N + i] = Math.abs(dudx);
+      const dsdx = (right - left) / (2 * dx);
+      const dsdy = (up - down) / (2 * dx);
+
+      gradMag[j * N + i] = Math.hypot(dsdx, dsdy);
     }
   }
 
