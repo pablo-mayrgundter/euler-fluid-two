@@ -6,9 +6,16 @@ interface CursorOverlayProps {
   onCursorMove: (y: number) => void;
   width: number;
   height: number;
+  radiusPx: number;
 }
 
-export function CursorOverlay({ cursor, onCursorMove, width, height }: CursorOverlayProps) {
+export function CursorOverlay({
+  cursor,
+  onCursorMove,
+  width,
+  height,
+  radiusPx,
+}: CursorOverlayProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,6 +36,9 @@ export function CursorOverlay({ cursor, onCursorMove, width, height }: CursorOve
   }, [onCursorMove]);
 
   const cursorPixelY = cursor.y * height;
+  const indicatorHeight = Math.max(10, 2 * radiusPx);
+  const indicatorHalfHeight = indicatorHeight / 2;
+  const labelY = Math.max(0, cursorPixelY - indicatorHalfHeight - 16);
 
   return (
     <div
@@ -37,16 +47,18 @@ export function CursorOverlay({ cursor, onCursorMove, width, height }: CursorOve
       style={{ width, height }}
     >
       <div
-        className="absolute left-0 w-1 h-8 -translate-y-4 transition-colors"
+        className="absolute left-0 w-1 rounded transition-all"
         style={{
           top: cursorPixelY,
+          height: indicatorHeight,
+          transform: `translateY(-${indicatorHalfHeight}px)`,
           backgroundColor: cursor.locked ? '#ef4444' : '#3b82f6',
         }}
       />
       {cursor.locked && (
         <div
           className="absolute left-2 text-xs font-semibold text-red-500"
-          style={{ top: cursorPixelY - 4 }}
+          style={{ top: labelY }}
         >
           LOCKED
         </div>

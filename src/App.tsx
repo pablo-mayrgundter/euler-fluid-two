@@ -20,6 +20,7 @@ import {
   unlockForces,
 } from './simulation/physics';
 import { GridState, SimulationParams, CursorState, DisplayMode, Diagnostics } from './simulation/types';
+import { CANVAS_SIZE } from './constants';
 
 const N = 128;
 
@@ -28,8 +29,8 @@ const initialParams: SimulationParams = {
   inflowVelocity: 0.5,
   inflowProfile: 'Uniform',
   forceMagnitude: 2.0,
-  forceRadius: 20,
-  forceSigma: 0.1,
+  forceRadius: 20 / CANVAS_SIZE,
+  forceSigma: 0.75,
   forceDirection: 'Rightward',
   autoCFL: true,
   dt: 0.001,
@@ -173,7 +174,13 @@ function App() {
               arrowDensity={arrowDensity}
               logScale={logScale}
             />
-            <CursorOverlay cursor={cursor} onCursorMove={handleCursorMove} width={512} height={512} />
+            <CursorOverlay
+              cursor={cursor}
+              onCursorMove={handleCursorMove}
+              width={CANVAS_SIZE}
+              height={CANVAS_SIZE}
+              radiusPx={params.forceRadius * CANVAS_SIZE}
+            />
           </div>
 
           <DiagnosticsPanel diagnostics={diagnostics} fps={fps} />
