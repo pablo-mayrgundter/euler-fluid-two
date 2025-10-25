@@ -1,4 +1,5 @@
 import { SimulationParams, DisplayMode } from '../simulation/types';
+import { CANVAS_SIZE } from '../constants';
 
 interface ControlPanelProps {
   params: SimulationParams;
@@ -27,6 +28,8 @@ export function ControlPanel({
   onPlayPauseToggle,
   onStep,
 }: ControlPanelProps) {
+  const forceRadiusPx = params.forceRadius * CANVAS_SIZE;
+
   const updateParam = <K extends keyof SimulationParams>(
     key: K,
     value: SimulationParams[K]
@@ -148,14 +151,17 @@ export function ControlPanel({
 
           <div>
             <label className="block text-gray-300 text-sm font-medium mb-2">
-              Force Radius: {params.forceRadius}
+              Force Radius: {forceRadiusPx.toFixed(0)} px
             </label>
             <input
               type="range"
               min="5"
-              max="50"
-              value={params.forceRadius}
-              onChange={(e) => updateParam('forceRadius', Number(e.target.value))}
+              max="100"
+              step="1"
+              value={forceRadiusPx}
+              onChange={(e) =>
+                updateParam('forceRadius', Number(e.target.value) / CANVAS_SIZE)
+              }
               className="w-full"
             />
           </div>
@@ -166,8 +172,8 @@ export function ControlPanel({
             </label>
             <input
               type="range"
-              min="0.01"
-              max="0.5"
+              min="0.25"
+              max="2.5"
               step="0.01"
               value={params.forceSigma}
               onChange={(e) => updateParam('forceSigma', Number(e.target.value))}

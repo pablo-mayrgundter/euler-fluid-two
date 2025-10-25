@@ -76,16 +76,19 @@ export function composeForces(
   }
 
   const cursorY = cursor.y;
-  const sigma2 = forceSigma * forceSigma;
+  const radius = forceRadius;
+  const radius2 = radius * radius;
+  const sigma = forceSigma;
+  const sigma2 = sigma * sigma;
 
   for (let j = 0; j < N; j++) {
     const y = (j + 0.5) / N;
     const dy = y - cursorY;
     const dist2 = dy * dy;
 
-    if (Math.sqrt(dist2) > forceRadius / N) continue;
+    if (dist2 > radius2) continue;
 
-    const weight = Math.exp(-dist2 / (2 * sigma2 / (N * N)));
+    const weight = Math.exp(-dist2 / (2 * sigma2));
 
     for (let i = 0; i <= Math.min(5, N); i++) {
       const idx = j * (N + 1) + i;

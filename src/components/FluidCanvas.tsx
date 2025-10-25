@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { GridState, DisplayMode } from '../simulation/types';
+import { CANVAS_SIZE } from '../constants';
 
 interface FluidCanvasProps {
   state: GridState;
@@ -33,8 +34,8 @@ export function FluidCanvas({ state, displayMode, arrowDensity, logScale }: Flui
   return (
     <canvas
       ref={canvasRef}
-      width={512}
-      height={512}
+      width={CANVAS_SIZE}
+      height={CANVAS_SIZE}
       className="border-2 border-gray-700 rounded-lg shadow-2xl"
     />
   );
