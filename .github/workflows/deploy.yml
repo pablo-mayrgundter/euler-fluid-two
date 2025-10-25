@@ -1,0 +1,53 @@
+name: Build & Deploy (Pages)
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+
+      # Build for GitHub Pages (needs base=/USERNAME/REPO)
+      - run: VITE_BASE=/pablo-mayrgundter/euler-fluid-two npm run build
+      - name: Upload dist as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: dist
+
+  deploy-pages:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: dist
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - uses: actions/deploy-pages@v4
+
+#  notify-bolt:
+#    needs: build
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Trigger Bolt redeploy (optional)
+#        run: |
+#          echo "POST to your Bolt deploy hook here if available"
+#          # curl -X POST "$BOLT_DEPLOY_HOOK"
+#        env:
+#          BOLT_DEPLOY_HOOK: ${{ secrets.BOLT_DEPLOY_HOOK }}
