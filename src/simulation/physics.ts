@@ -78,8 +78,10 @@ export function composeForces(
   const cursorY = cursor.y;
   const radius = forceRadius;
   const radius2 = radius * radius;
-  const sigma = forceSigma;
+  const sigma = Math.max(forceSigma * radius, 1e-6);
   const sigma2 = sigma * sigma;
+  const gaussianAtRadius = Math.exp(-radius2 / (2 * sigma2));
+  const normalization = 1 / Math.max(1e-6, 1 - gaussianAtRadius);
 
   for (let j = 0; j < N; j++) {
     const y = (j + 0.5) / N;
@@ -88,7 +90,8 @@ export function composeForces(
 
     if (dist2 > radius2) continue;
 
-    const weight = Math.exp(-dist2 / (2 * sigma2));
+    const gaussian = Math.exp(-dist2 / (2 * sigma2));
+    const weight = Math.max(0, (gaussian - gaussianAtRadius) * normalization);
 
     for (let i = 0; i <= Math.min(5, N); i++) {
       const idx = j * (N + 1) + i;
